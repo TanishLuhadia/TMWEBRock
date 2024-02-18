@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Department</title>
+    <script src='jquery.js'></script>
+    <script src='/TMWEBRock/jsFile?name=abcd'></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin-bottom: 20px;
+ background-size: cover;
+            background-position: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        form button {
+            padding: 10px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: white;
+        }
+
+        span {
+            color: #cc0000;
+        }
+    </style>
+    <script>
+        $(() => {
+            window.getAll = function (formID) {
+                var s = new StudentService();
+                var a = s.getAll();
+                a.then(
+                    function (result) {
+updateTable(result);
+ $('#dataTable thead').show();
+                    },
+                    function (error) {
+                    }
+                );
+return false;
+            }
+
+            function updateTable(data) {
+                var tableBody = $('#dataTable tbody').empty();
+                for (var i = 0; i < data.length; i++) {
+                    tableBody.append('<tr>' + '<td>' + data[i].id + '</td>' + '<td>' + data[i].name + '</td>' + '<td>' + data[i].gender + '</td>' + '</tr>');
+                }
+            }
+
+            window.addStudent = function (formID) {
+                $('#whatever').text("");
+                var s = new StudentService();
+                var a = s.add(formID);
+                a.then(
+                    function (result) {
+                        if (result.successful == true) {
+                            $('#whatever').append(result.result);
+                        } else {
+                            $('#whatever').append(result.exception);
+                        }
+                    },
+                    function (error) {
+                        $('#whatever').append(error.exception);
+                    });
+                return false;
+            };
+
+            window.deleteStudent = function (formID) {
+                $('#whateverr').text("");
+                var s = new StudentService();
+                var a = s.delete(formID);
+                a.then(
+                    function (result) {
+                        if (result.successful == true) {
+                            $('#whateverr').append(result.result);
+                        } else {
+                            $('#whateverr').append(result.exception);
+                        }
+                    },
+                    function (error) {
+                        $('#whateverr').append(error.exception);
+                    });
+                return false;
+            };
+        }); // main
+    </script>
+</head>
+
+<body>
+    <header>
+        <h1>Department</h1>
+    </header>
+
+    <main>
+        <div>
+            <form id='form2' onsubmit='return addStudent("form2")'>
+                <label for='id'>Roll Number</label>
+                <input type='number' id='id' name='id'>
+                <br>
+                <label for='name'>Name</label>
+                <input type='text' id='name' name='name'>
+                <br>
+                <label for='gender'>Gender</label>
+                <input type='text' id='gender' name='gender'>
+                <br>
+                <span id='whatever'></span>
+                <button type='submit'>Add</button>
+            </form>
+        </div>
+
+        <div>
+            <form id='form1' onsubmit='return deleteStudent("form1")'>
+                <label for='id'>Roll Number</label>
+                <input type='number' id='id' name='id'>
+                <br>
+                <span id='whateverr'></span>
+                <button type='submit'>Delete</button>
+            </form>
+        </div>
+
+        <div>
+            <form id='form3' onsubmit='return getAll("form3")'>
+                <button type='submit'>Get All</button>
+            </form>
+        </div>
+
+        <table id="dataTable">
+            <thead style='display: none'>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </main>
+</body>
+
+</html>

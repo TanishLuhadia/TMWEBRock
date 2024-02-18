@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>AJAX EXAMPLES</title>
+<script>
+function saveEnquiry()
+{
+alert("Hi");
+var firstName=document.getElementById('tanish').value;
+var age=document.getElementById('tanishAge').value;
+var customer={
+"firstName":firstName,
+"age":age
+};
+var whatever=document.getElementById("whatever");
+whatever.innerHTML="";
+var xmlHttpRequest=new XMLHttpRequest();
+xmlHttpRequest.onreadystatechange=function(){
+if(this.readyState==4)
+{
+if(this.status==200)
+{
+alert("Hello");
+whatever.innerHTML="Great";
+}
+else
+{
+alert('Some problem');
+}
+}
+};
+xmlHttpRequest.open('POST','/TMWEBRock/schoolService/student/lmn',true);
+xmlHttpRequest.setRequestHeader("Content-Type","application/json");
+xmlHttpRequest.send(JSON.stringify(customer));
+}
+</script>
+</head>
+<body>
+<h1>Post type request </h1>
+First name <input type='text' id='tanish' name='tanish'><br>
+Age <input type='text' id='tanishAge' name='tanishAge'><br>
+<button type='button' onclick='saveEnquiry()'>Save</button><br>
+<br>
+<div id='whatever'></div>
+<br>
+<a href='index.html'>Home</a>
+</body>
+</html>
